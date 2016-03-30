@@ -1,0 +1,1717 @@
+\documentclass[13pt,aspectratio=169]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\mode<presentation>{\usetheme{default}}
+
+%%% macros
+\newcommand{\todo}[1]{\textcolor{red}{@TODO: #1}}
+\newcommand{\tc}[2]{\textcolor{#1}{#2}}
+\renewcommand{\tt}[1]{\texttt{#1}}
+\newcommand{\ig}{\includegraphics}
+
+%%% packages
+\usepackage{tikz}
+\hypersetup{colorlinks,linkcolor=,urlcolor=blue}
+
+%%% Environments
+% make knitr output denser
+\ifdefined\knitrout
+\renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{}
+\else
+\fi
+
+%%% Colours
+\definecolor{green}{RGB}{0, 180, 0} % green is too light
+\definecolor{Blue}{RGB}{0, 51, 102} % dark navy blue
+%\definecolor{Blue}{RGB}{0, 0, 255} % other blue
+
+%%% Beamer elements
+%% Templates
+% page number
+\setbeamertemplate{footline}{%
+    \raisebox{5pt}{\makebox[\paperwidth]{\hfill\makebox[20pt]{\color{Blue}
+		\scriptsize\insertframenumber}}}\hspace*{5pt}}
+
+% frametitle
+\setbeamertemplate{frametitle}{\LARGE\color{Blue}\textbf{\insertframetitle}\vskip-1pt}
+\setbeamertemplate{itemize items}[ball]
+% \setbeamertemplate{itemize/enumerate body begin}{\Large}
+% \setbeamertemplate{itemize/enumerate subbody begin}{\normalsize}
+\beamertemplatenavigationsymbolsempty % clean out all the crap
+
+%% fonts
+\setbeamerfont{title}{size=\Huge,series=\bfseries}
+
+%% colours
+\setbeamercolor{title}{fg=Blue}
+\setbeamercolor*{item}{fg=Blue}
+
+%%% Other
+\title{The basics of R}
+\author{Peter Diakumis - Bahlo Lab \\[2pt] R Workshop 1}
+\date{\scriptsize{\today}}
+\graphicspath{{../figs/}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\begin{frame}[fragile]
+    \titlepage
+
+\end{frame}
+
+{ % all template changes are local to this group.
+    \begin{frame}[plain]
+	\begin{tikzpicture}[remember picture,overlay]
+	    \node[at=(current page.center)] {
+		\includegraphics[width=\paperwidth]{iceberg}
+	    };
+	\end{tikzpicture}
+    \end{frame}
+}
+
+\begin{frame}
+    \frametitle{What can we learn today?}
+    \begin{columns}[t]
+	\column{0.2\textwidth}
+	\begin{itemize}
+	    \item What is R
+	\end{itemize}
+	\vskip14pt
+	\includegraphics[width=.9\textwidth]{rapp_logo}\\
+	\column{0.5\textwidth}
+	\begin{itemize}
+	    \item How (and where) to find help, resouRces, courses, tutorials
+	\end{itemize}
+	\includegraphics[width=.8\textwidth,trim={0 0cm 0 17cm},clip]{google}\\
+	\includegraphics[width=.8\textwidth]{stackoverflow}\\
+	\includegraphics[width=.3\textwidth]{coursera}\hspace*{10mm}
+	\includegraphics[width=.3\textwidth]{edx}
+	\column{0.3\textwidth}
+	\begin{itemize}
+	    \item How to write and run R code \& scripts
+	\end{itemize}
+	\vskip14pt
+	\includegraphics[width=1.0\textwidth]{rstudio_logo}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{What can we learn today?}
+    \begin{columns}[t]
+	\column{0.3\textwidth}
+	\begin{itemize}
+	    \item \textbf{numbers, characters \& logicals} in R
+	\end{itemize}
+	\vskip14pt
+	\includegraphics[width=.9\textwidth]{acgt}
+	\column{0.3\textwidth}
+	\begin{itemize}
+	    \item \textbf{vectors} in R
+	\end{itemize}
+	\vskip14pt
+	\includegraphics[width=.7\textwidth]{dna}
+	\column{0.4\textwidth}
+	\begin{itemize}
+	    \item \textit{simple} \textbf{functions} in R
+	\end{itemize}
+	\vskip14pt
+	\includegraphics[width=.9\textwidth]{central-dogma}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{What can we learn today?}
+    \begin{columns}[t]
+	\column{0.4\textwidth}
+	\begin{itemize}
+	    \item \textbf{matrix, data.frame \& list} in R
+		\alert{(\textit{not today..})}
+	\end{itemize}
+	\vskip14pt
+	\includegraphics[width=1.0\textwidth]{protein}
+	\column{0.6\textwidth}
+	\begin{itemize}
+	    \item \textbf{packages} in R
+		\alert{(\textit{a little bit..})}
+	\end{itemize}
+	\vskip14pt
+	% trim from left anti-clockwise
+	\includegraphics[width=.9\textwidth,trim={0 2cm 0 2.5cm},clip]{cell}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+	\tc{Blue}{\textbf{\Huge{Part 1}}}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Stuff about R}
+	\begin{itemize}
+	    \item Programming language for statisticians \& data scientists
+		created in early 90s by \textbf{R}oss Ihaka \&
+		\textbf{R}obert Gentleman in Auckland, NZ
+	    \item Statistical computing, advanced methodologies,
+		amazing visualisations - \textbf{all in one}, and
+		\textbf{free}ly available (you didn't pay anything for
+		installation, did you?)
+	    \item Easy to \textbf{learn}. Hard to \textbf{master}.
+	\end{itemize}
+	\includegraphics[width=.2\textwidth]{oz_map}
+	\includegraphics[width=.2\textwidth]{heatmap}
+	\includegraphics[width=.2\textwidth]{boxplot}
+	\includegraphics[width=.2\textwidth]{barplot}
+	\includegraphics[width=.2\textwidth]{scatterplot}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Stuff about R}
+    \begin{columns}
+	\column{0.4\textwidth}
+	\includegraphics[height=.6\textheight]{cran}
+	\column{0.6\textwidth}
+	\begin{itemize}
+	    \item Close to 9,000 \textbf{free} R packages (extensions)
+		available (i.e. if you're analysing some kind of data, someone
+		has probably created a helpful package \& workflow)
+		\vskip10pt
+	    \item Excellent for reproducibility of analyses \& dry
+		lab experiments
+		\vskip10pt
+	    \item Easy collaboration and scientific report generation
+		\textit{(maybe HackR 3 or 4?)}
+	\end{itemize}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Start out...}
+    \begin{center}
+	\includegraphics[height=.9\textheight]{no-idea}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{...Train Hard}
+    \includegraphics[height=.9\textheight]{bear}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Then...}
+    \includegraphics[height=.9\textheight]{cat_karate}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+	\tc{Blue}{\textbf{\Huge{Very very short demo}}}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{install.packages}\hlstd{(}\hlstr{"ggplot2"}\hlstd{)}
+\hlstd{> }\hlkwd{install.packages}\hlstd{(}\hlstr{"oz"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{library}\hlstd{(ggplot2);} \hlkwd{library}\hlstd{(oz)}
+\hlstd{> }\hlkwd{load}\hlstd{(}\hlstr{"../data/ozdata.rda"}\hlstd{)}
+\hlstd{> }\hlkwd{head}\hlstd{(ozdata)}
+\end{alltt}
+\begin{verbatim}
+      long       lat group order state border
+1 129.0114 -31.57795     1     1    WA  coast
+2 128.7262 -31.69202     1     2    WA  coast
+3 128.5932 -31.78707     1     3    WA  coast
+4 128.4981 -31.80608     1     4    WA  coast
+5 128.3840 -31.88213     1     5    WA  coast
+6 128.1369 -31.93916     1     6    WA  coast
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlcom{# map showing all states in different colours}
+\hlstd{> }\hlstd{p} \hlkwb{<-} \hlkwd{qplot}\hlstd{(long, lat,} \hlkwc{data} \hlstd{= ozdata,} \hlkwc{geom} \hlstd{=} \hlstr{"polygon"}\hlstd{,}
+\hlstd{+ }      \hlkwc{fill} \hlstd{= state,} \hlkwc{main} \hlstd{=} \hlstr{"States of Australia"}\hlstd{)} \hlopt{+} \hlkwd{coord_equal}\hlstd{()}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
+
+\end{knitrout}
+\end{frame}
+
+\begin{frame}
+    \frametitle{R comes in 3 basic flavours on a Mac:}
+    \includegraphics[width=\textwidth]{flavours}
+	    \vskip10pt
+    \textbf{\LARGE{\tc{Blue}{RStudio - R app - R terminal}}}
+\end{frame}
+
+\begin{frame}
+    \frametitle{RStudio is awRsome!}
+    \begin{center}
+	\includegraphics[height=.9\textheight]{rstudio}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+	\tc{Blue}{\textbf{\Huge{Let's start breaking R!}}}
+		\vskip10pt
+	\LARGE{... but first let's open Microsoft Excel}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+	\frametitle{Entering data in Excel is easy.
+	    \\But how do we enter data into R?}
+	\includegraphics[height=.6\textheight]{excel1}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Writing R Code - 2 ways}
+    \begin{center}
+	\includegraphics[height=.8\textheight]{yoda}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{columns}[b]
+	\column{0.5\textwidth}
+	\textbf{\tc{Blue}{\LARGE{1. Interactively in the console (\tt{>} is
+		    the \tc{green}{prompt})}}}
+	\vskip10pt
+	\includegraphics[height=.7\textheight]{rstudio_console}
+	\column{0.5\textwidth}
+	\textbf{\tc{Blue}{\LARGE{2. In a simple .R file \\
+		    (Cmd+Enter = Magic!)}}}
+	\vskip10pt
+	\includegraphics[height=.7\textheight]{rstudio_source}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{R Code Style Basics}
+    \tc{Blue}{\textbf{Assign values to variables
+	    \vskip10pt
+	    Use \tt{<-}}
+	\textit{(less than minus with \alert{no spaces} in between!!)}}.\\
+    Don't use \alert{\tt{=}}.\\ Because I said so.
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Good}
+\hlstd{x} \hlkwb{<-} \hlnum{5}
+\hlstd{my_name} \hlkwb{<-} \hlstr{"Yoda"}
+
+\hlcom{# Bad (but works...)}
+\hlstd{x} \hlkwb{=} \hlnum{5}
+\hlstd{my_name} \hlkwb{=} \hlstr{"Yoda"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlnum{5} \hlcom{# Good}
+\hlstd{x} \hlopt{< -} \hlnum{5} \hlcom{# Bad (works, but not as you'd expect!)}
+\end{alltt}
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{R Code Style Basics}
+    \textbf{\tc{Blue}{Variable names}}
+    \begin{itemize}
+	\item Don't start with a number, and no spaces!
+	\item Keep it simple but descriptive
+	\item Names are like sensitive passwords:
+	    \tt{NAME}, \tt{Name}, \tt{name} \& \tt{NaMe} are distinct!
+    \end{itemize}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Good}
+day_one
+day_1
+dayOne
+day.one
+
+\hlcom{# Bad}
+day one \hlcom{# won't work with spaces}
+1_day \hlcom{# won't work starting with a number}
+first_day_of_the_year_two_thousand_fifteen \hlcom{# very long}
+fdotyttf \hlcom{# OMG LOL}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{R Code Style Basics}
+    \textbf{\tc{Blue}{Spacing = Clarity!}}
+	    \vskip10pt
+	    Try reading out your code. Put spaces between things like you'd
+	    normally do when writing normal text.
+	    \vskip10pt
+	    Don't worry too much - will learn with experience :-)
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlcom{# Whichonewouldyouprefertoreadat2:35am?}
+\hlstd{> }\hlstd{x} \hlkwb{<-} \hlstd{(y} \hlopt{+} \hlstd{z)} \hlopt{*} \hlnum{12} \hlopt{^} \hlstd{(a} \hlopt{-} \hlstd{b)} \hlopt{/} \hlkwd{sum}\hlstd{(k, l)}
+\hlstd{> }\hlstd{x}\hlkwb{<-}\hlstd{(y}\hlopt{+}\hlstd{z)}\hlopt{*}\hlnum{12}\hlopt{^}\hlstd{(a}\hlopt{-}\hlstd{b)}\hlopt{/}\hlkwd{sum}\hlstd{(k,l)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Check out \href{https://google-styleguide.googlecode.com/svn/trunk/Rguide.xml}{web\_link1}
+and \href{http://adv-r.had.co.nz/Style.html}{web\_link2} if you are curious.
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{R Code Style Basics}
+    \textbf{\tc{Blue}{Comment your code with \#} -
+	everything on the right
+	of \tt{\#} is ignored}
+    \begin{itemize}
+	\item Either in a \alert{separate line}...
+    \end{itemize}
+
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlcom{# Create variables height and width}
+\hlstd{> }\hlstd{height} \hlkwb{<-} \hlnum{3}
+\hlstd{> }\hlstd{width} \hlkwb{<-} \hlnum{6}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+    \begin{itemize}
+	\item Or in the \alert{same line} ...
+    \end{itemize}
+
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{area} \hlkwb{<-} \hlstd{height} \hlopt{*} \hlstd{width}
+\hlstd{> }\hlstd{area} \hlcom{# should be 18}
+\end{alltt}
+\begin{verbatim}
+[1] 18
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlcom{# area * 2}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Variables }
+    \textbf{\tc{Blue}{Why do we need ``variables''?}}
+    \vskip10pt
+    In the code below, ``Yoda'' is written 3 times. (\tt{paste()} simply sticks
+    everything inside it together and prints the result)
+
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{paste}\hlstd{(}\hlstr{"Yoda knows everything"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] "Yoda knows everything"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{paste}\hlstd{(}\hlstr{"Luke learnt everything from Yoda"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] "Luke learnt everything from Yoda"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{paste}\hlstd{(}\hlstr{"I think Yoda is 785 years old"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] "I think Yoda is 785 years old"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Variables}
+    \textbf{\tc{Blue}{Why do we need ``variables''?}}
+    \vskip10pt
+    Let's say Yoda sends the R script to Peter.\\
+    In the code below, ``Peter'' is written \textit{almost} 3 times.
+
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{paste}\hlstd{(}\hlstr{"Peter knows everything"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] "Peter knows everything"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{paste}\hlstd{(}\hlstr{"Luke learnt everything from Peter"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] "Luke learnt everything from Peter"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{paste}\hlstd{(}\hlstr{"I think Pter is 785 years old"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] "I think Pter is 785 years old"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Variables}
+    \textbf{\tc{Blue}{Why do we need ``variables''?}}
+    \vskip10pt
+    Instead of going through all the code and changing all the
+    occurrences of ``Yoda'' to ``Peter'', we can instead create a
+    variable e.g. \tt{the\_name} and assign it the value that we
+    wish. This way, ``Han'', ``Chewie'', ``Leia'' etc. only need
+    to change that variable \alert{once}. This saves time, energy \& eyeballs.
+    So variables = good.
+
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{the_name} \hlkwb{<-} \hlstr{"Peter"}
+\hlstd{> }\hlkwd{paste}\hlstd{(the_name,} \hlstr{"knows everything"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] "Peter knows everything"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{paste}\hlstd{(}\hlstr{"Luke learnt everything from"}\hlstd{, the_name)}
+\end{alltt}
+\begin{verbatim}
+[1] "Luke learnt everything from Peter"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{paste}\hlstd{(}\hlstr{"I think"}\hlstd{,  the_name,} \hlstr{"is 785 years old"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] "I think Peter is 785 years old"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}
+    \begin{center}
+	\tc{Blue}{\textbf{\Huge{Part 2}}}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Functions (very very briefly)}
+    \begin{columns}[t]
+	\column{0.4\textwidth}
+	\includegraphics[width=.8\textwidth]{function}
+	\column{0.6\textwidth}
+	\includegraphics[width=.6\textwidth]{sum_function_excel}\\
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{sum}\hlstd{(}\hlnum{123}\hlstd{,} \hlnum{35}\hlstd{,} \hlnum{59}\hlstd{,} \hlnum{46}\hlstd{,} \hlnum{26}\hlstd{,} \hlnum{245.6}\hlstd{,} \hlnum{25}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] 559.6
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Functions (very very briefly)}
+    \begin{itemize}
+	\item The things you put between parentheses are called arguments
+	\item Use ``?'' to check out function details (e.g. what type of
+	    arguments you can specify)
+    \end{itemize}
+    \begin{columns}[t]
+	\column{0.5\textwidth}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{sum}\hlstd{(}\hlnum{10}\hlstd{,} \hlnum{20}\hlstd{,} \hlnum{30}\hlstd{,} \hlnum{100}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] 160
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{prod}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] 24
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlopt{?}\hlstd{sum}
+\hlstd{> }\hlopt{?}\hlstd{prod}
+\hlstd{> }\hlopt{?}\hlstd{paste}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+	\column{0.5\textwidth}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{paste}\hlstd{(}\hlstr{"Star"}\hlstd{,} \hlstr{"Wars:"}\hlstd{,} \hlstr{"Episode VI"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] "Star Wars: Episode VI"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{paste}\hlstd{(}\hlstr{"Return of"}\hlstd{,} \hlstr{"the Jedi"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] "Return of the Jedi"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Workspace (or Environment)}
+    How can I see which variables have been created?
+    Just list them with \tt{ls()}:
+
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{ls}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+[1] "area"     "height"   "ozdata"   "p"        "the_name" "width"   
+[7] "x"       
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{height}
+\end{alltt}
+\begin{verbatim}
+[1] 3
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{rm}\hlstd{(height)} \hlcom{# rm removes stuff}
+\hlstd{> }\hlstd{height}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{Error in eval(expr, envir, enclos): object 'height' not found}}\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Workspace (or Environment)}
+    ...or check out the Environment window:
+    \vskip14pt
+    \includegraphics[width=.8\textwidth]{environment}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+	\textbf{\Huge{\tc{Blue}{Basic Data Types}}}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{numeric}
+    \begin{columns}[b]
+	\column{0.3\textwidth}
+    All numbers:
+    positive, negative, decimals.
+    Note how \tt{;} can be used to terminate an expression, instead of using a
+    separate line. Neat.
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{a} \hlkwb{<-} \hlnum{1}\hlstd{; a}
+\end{alltt}
+\begin{verbatim}
+[1] 1
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{b} \hlkwb{<-} \hlnum{2}\hlstd{; b}
+\end{alltt}
+\begin{verbatim}
+[1] 2
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{c} \hlkwb{<-} \hlnum{1000}\hlstd{; c}
+\end{alltt}
+\begin{verbatim}
+[1] 1000
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+	\column{0.3\textwidth}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{d} \hlkwb{<-} \hlopt{-}\hlnum{34}\hlstd{; d}
+\end{alltt}
+\begin{verbatim}
+[1] -34
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{e} \hlkwb{<-} \hlnum{0}\hlstd{; e}
+\end{alltt}
+\begin{verbatim}
+[1] 0
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{f} \hlkwb{<-} \hlopt{-}\hlnum{753000}\hlstd{; f}
+\end{alltt}
+\begin{verbatim}
+[1] -753000
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+	\column{0.5\textwidth}
+    \includegraphics[width=.6\textwidth]{pi_day}
+    \vskip6pt
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{g} \hlkwb{<-} \hlnum{0.005}\hlstd{; g}
+\end{alltt}
+\begin{verbatim}
+[1] 0.005
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{h} \hlkwb{<-} \hlnum{3.14}\hlstd{; h}
+\end{alltt}
+\begin{verbatim}
+[1] 3.14
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{i} \hlkwb{<-} \hlopt{-}\hlnum{42.9}\hlstd{; i}
+\end{alltt}
+\begin{verbatim}
+[1] -42.9
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{character}
+    Anything you put in between quotes \tt{``''} \hspace*{10mm}
+    \includegraphics[width=.3\textwidth]{dog_ears}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{lucky_num} \hlkwb{<-} \hlstr{"My lucky number is 42"}
+\hlstd{> }\hlstd{lucky_num}
+\end{alltt}
+\begin{verbatim}
+[1] "My lucky number is 42"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{num_but_char} \hlkwb{<-} \hlstr{"13"}
+\hlstd{> }\hlstd{num_but_char}
+\end{alltt}
+\begin{verbatim}
+[1] "13"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{get_published} \hlkwb{<-} \hlstr{"If p-value < 0.05 then Nature awaits..."}
+\hlstd{> }\hlstd{get_published}
+\end{alltt}
+\begin{verbatim}
+[1] "If p-value < 0.05 then Nature awaits..."
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]
+    \frametitle{logical}
+    \begin{columns}[t]
+	\column{.35\textwidth}
+	Things are either TRUE or FALSE. Never both.
+	\vskip6pt
+	\includegraphics[width=1.0\textwidth,trim={0 0.5cm 0 0},clip]{true_false}
+	\column{.35\textwidth}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlnum{2} \hlopt{>} \hlnum{1}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlnum{6} \hlopt{<} \hlnum{2}
+\end{alltt}
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlnum{1} \hlopt{+} \hlnum{1} \hlopt{==} \hlnum{2}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlnum{6} \hlopt{-} \hlnum{5} \hlopt{==} \hlnum{3}
+\end{alltt}
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlnum{10} \hlopt{/} \hlnum{5} \hlopt{==} \hlnum{2}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+	\column{.3\textwidth}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlnum{TRUE} \hlopt{==} \hlnum{FALSE}
+\end{alltt}
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlcom{# Not equal}
+\hlstd{> }\hlnum{TRUE} \hlopt{!=} \hlnum{FALSE}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlcom{# How about characters?}
+\hlstd{> }\hlstr{"Hello"} \hlopt{==} \hlstr{"Hello"}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstr{"Hello"} \hlopt{==} \hlstr{"hello"}
+\end{alltt}
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{logical}
+    \fontsize{14pt}{5}\selectfont
+    \vskip16pt
+    You can also use the number form of logicals:\\
+    \vskip16pt
+    \tt{TRUE} is 1. \tt{FALSE} is 0
+    \vskip16pt
+
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{x} \hlkwb{<-} \hlnum{TRUE}
+\hlstd{> }\hlnum{3} \hlopt{*} \hlstd{x}
+\end{alltt}
+\begin{verbatim}
+[1] 3
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{y} \hlkwb{<-} \hlnum{FALSE}
+\hlstd{> }\hlnum{123} \hlopt{*} \hlstd{y}
+\end{alltt}
+\begin{verbatim}
+[1] 0
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{x} \hlopt{+} \hlstd{y}
+\end{alltt}
+\begin{verbatim}
+[1] 1
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{(}\hlnum{3} \hlopt{*} \hlstd{x)} \hlopt{+} \hlstd{(}\hlnum{123} \hlopt{*} \hlstd{y)}
+\end{alltt}
+\begin{verbatim}
+[1] 3
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{logical}
+    \begin{columns}[t]
+	\column{.4\textwidth}
+	\tt{TRUE} and \tt{FALSE} are protected in R i.e. you can't modify them.
+	They can be a bit of a pain to type. You can be naughty and use
+	shortcut T and F. \alert{Don't} because...
+
+	\vskip6pt
+	\includegraphics[width=1.0\textwidth,trim={0 1.5cm 0 0},clip]{true_false2}
+	\column{.2\textwidth}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{T}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{F}
+\end{alltt}
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{x} \hlkwb{<-} \hlstd{T}
+\hlstd{> }\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{T} \hlkwb{<-} \hlnum{FALSE}
+\hlstd{> }\hlstd{T}
+\end{alltt}
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{x} \hlkwb{<-} \hlstd{T}
+\hlstd{> }\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+	\column{.4\textwidth}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlcom{# valid}
+\hlstd{> }\hlstd{T} \hlkwb{<-} \hlstr{"Thank You"}
+\hlstd{> }\hlstd{T}
+\end{alltt}
+\begin{verbatim}
+[1] "Thank You"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{x} \hlkwb{<-} \hlstd{T}
+\hlstd{> }\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+[1] "Thank You"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlcom{# invalid}
+\hlstd{> }\hlnum{TRUE} \hlkwb{<-} \hlstr{"You're Welcome"}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{Error in TRUE <- "{}You're Welcome"{}: invalid (do\_set) left-hand side to assignment}}\begin{alltt}
+\hlstd{> }\hlnum{TRUE}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{factor}
+When you have only a few different "categories" of data values
+\vskip6pt
+e.g. gender, country, age group, religion etc.
+\vskip6pt
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{blood} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"B"}\hlstd{,} \hlstr{"AB"}\hlstd{,} \hlstr{"O"}\hlstd{,} \hlstr{"A"}\hlstd{,} \hlstr{"O"}\hlstd{,} \hlstr{"O"}\hlstd{,} \hlstr{"A"}\hlstd{,} \hlstr{"B"}\hlstd{)}
+\hlstd{> }\hlstd{blood}
+\end{alltt}
+\begin{verbatim}
+[1] "B"  "AB" "O"  "A"  "O"  "O"  "A"  "B" 
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{blood_factor} \hlkwb{<-} \hlkwd{factor}\hlstd{(blood)}
+\hlstd{> }\hlstd{blood_factor}
+\end{alltt}
+\begin{verbatim}
+[1] B  AB O  A  O  O  A  B 
+Levels: A AB B O
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{str}\hlstd{(blood_factor)}
+\end{alltt}
+\begin{verbatim}
+ Factor w/ 4 levels "A","AB","B","O": 3 2 4 1 4 4 1 3
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{function \tt{is}...}
+    Helpful to check if something \alert{\textit{is something}}:\\
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{is.numeric}\hlstd{(}\hlnum{13}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{is.numeric}\hlstd{(}\hlopt{-}\hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{is.numeric}\hlstd{(}\hlnum{0.0004}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{is.numeric}\hlstd{(}\hlstr{"This is stupid"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{is.numeric}\hlstd{(}\hlnum{100}\hlstd{,}\hlnum{000}\hlstd{)} \hlcom{# can't use thousand separator!}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{Error in is.numeric(100, 0): 2 arguments passed to 'is.numeric' which requires 1}}\begin{alltt}
+\hlstd{> }\hlkwd{is.numeric}\hlstd{(}\hlnum{100000}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{function \tt{is}...}
+    Helpful to check if something \alert{\textit{is something}}:\\
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{et} \hlkwb{<-} \hlstr{"E.T. Go Home"}
+\hlstd{> }\hlstd{darth_vader} \hlkwb{<-} \hlstr{"Luke I'm your father"}
+\hlstd{> }\hlstd{num_but_char} \hlkwb{<-} \hlstr{"13"}
+\hlstd{> }\hlkwd{is.character}\hlstd{(et)}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{is.character}\hlstd{(darth_vader)}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{is.character}\hlstd{(num_but_char)}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{is.numeric}\hlstd{(et)}
+\end{alltt}
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{is.numeric}\hlstd{(num_but_char)}
+\end{alltt}
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{function \tt{as}...}
+    Helpful to convert (coerce) something \alert{\textit{as something}}:\\
+    \begin{columns}[t]
+	\column{0.5\textwidth}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{as.numeric}\hlstd{(}\hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] 1
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{as.numeric}\hlstd{(}\hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] 0
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{as.character}\hlstd{(}\hlnum{4}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] "4"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{as.numeric}\hlstd{(}\hlstr{"4.5"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] 4.5
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlcom{# Can't coerce characters to}
+\hlstd{> }\hlcom{# numeric, unless they're quoted}
+\hlstd{> }\hlcom{# numbers.}
+\hlstd{> }\hlkwd{as.numeric}\hlstd{(}\hlstr{"Hello"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{Warning: NAs introduced by coercion}}\begin{verbatim}
+[1] NA
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+	\column{0.5\textwidth}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlcom{# All numbers are TRUE, except 0}
+\hlstd{> }\hlkwd{as.logical}\hlstd{(}\hlnum{0}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{as.logical}\hlstd{(}\hlopt{-}\hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{as.logical}\hlstd{(}\hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{as.logical}\hlstd{(}\hlnum{5.9}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+	\textbf{\Huge{\tc{Blue}{Vectors and Subsetting}}}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Vector}
+    \begin{itemize}
+	\item Sequence of data elements
+	\item Same basic type
+	\item \tt{numeric}, \tt{logical}, \tt{character}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Create a vector with \tt{c()}}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{fruit} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"banana"}\hlstd{,} \hlstr{"apple"}\hlstd{,} \hlstr{"apple"}\hlstd{,} \hlstr{"kiwi"}\hlstd{,} \hlstr{"pineapple"}\hlstd{,} \hlstr{"strawberry"}\hlstd{)}
+\hlstd{> }\hlstd{fruit}
+\end{alltt}
+\begin{verbatim}
+[1] "banana"     "apple"      "apple"      "kiwi"       "pineapple" 
+[6] "strawberry"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{drawn_suits} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"hearts"}\hlstd{,} \hlstr{"spades"}\hlstd{,} \hlstr{"diamonds"}\hlstd{,} \hlstr{"diamonds"}\hlstd{,} \hlstr{"spades"}\hlstd{)}
+\hlstd{> }\hlstd{drawn_suits}
+\end{alltt}
+\begin{verbatim}
+[1] "hearts"   "spades"   "diamonds" "diamonds" "spades"  
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{lucky_numbers} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{10}\hlstd{,} \hlnum{7}\hlstd{,} \hlnum{13}\hlstd{,} \hlnum{42}\hlstd{,} \hlnum{99}\hlstd{)}
+\hlstd{> }\hlstd{lucky_numbers}
+\end{alltt}
+\begin{verbatim}
+[1] 10  7 13 42 99
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{is.vector}\hlstd{(drawn_suits)}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{is.vector}\hlstd{(fruit)}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{is.vector}\hlstd{(lucky_numbers)}
+\end{alltt}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Create a vector with \tt{:}}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{quick_vec} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{10}
+\hlstd{> }\hlstd{quick_vec}
+\end{alltt}
+\begin{verbatim}
+ [1]  1  2  3  4  5  6  7  8  9 10
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{x} \hlkwb{<-} \hlnum{5}\hlopt{:}\hlnum{12}
+\hlstd{> }\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+[1]  5  6  7  8  9 10 11 12
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{y} \hlkwb{<-} \hlopt{-}\hlnum{2}\hlopt{:}\hlnum{3}
+\hlstd{> }\hlstd{y}
+\end{alltt}
+\begin{verbatim}
+[1] -2 -1  0  1  2  3
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{z} \hlkwb{<-} \hlnum{3.2}\hlopt{:}\hlnum{10}
+\hlstd{> }\hlstd{z}
+\end{alltt}
+\begin{verbatim}
+[1] 3.2 4.2 5.2 6.2 7.2 8.2 9.2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Get a vector's length with... \tt{length()}}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{fruit}
+\end{alltt}
+\begin{verbatim}
+[1] "banana"     "apple"      "apple"      "kiwi"       "pineapple" 
+[6] "strawberry"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{length}\hlstd{(fruit)}
+\end{alltt}
+\begin{verbatim}
+[1] 6
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{drawn_suits}
+\end{alltt}
+\begin{verbatim}
+[1] "hearts"   "spades"   "diamonds" "diamonds" "spades"  
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{length}\hlstd{(lucky_numbers)}
+\end{alltt}
+\begin{verbatim}
+[1] 5
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{length}\hlstd{(}\hlnum{10}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] 1
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{length}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+[1] 1
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{length}\hlstd{(}\hlkwd{c}\hlstd{())} \hlcom{# empty vector}
+\end{alltt}
+\begin{verbatim}
+[1] 0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Coercion for vectors}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{drawn_ranks} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{7}\hlstd{,} \hlnum{4}\hlstd{,} \hlstr{"A"}\hlstd{,} \hlnum{10}\hlstd{,} \hlstr{"K"}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{2}\hlstd{,} \hlstr{"Q"}\hlstd{)}
+\hlstd{> }\hlstd{drawn_ranks}
+\end{alltt}
+\begin{verbatim}
+[1] "7"  "4"  "A"  "10" "K"  "3"  "2"  "Q" 
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{str}\hlstd{(drawn_ranks)}
+\end{alltt}
+\begin{verbatim}
+ chr [1:8] "7" "4" "A" "10" "K" "3" "2" "Q"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Vector Arithmetic}
+\vskip10pt
+Single element arithmetic
+\vskip10pt
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{my_apples} \hlkwb{<-} \hlnum{5}
+\hlstd{> }\hlstd{my_oranges} \hlkwb{<-} \hlnum{6}
+\hlstd{> }\hlstd{my_apples} \hlopt{+} \hlstd{my_oranges}
+\end{alltt}
+\begin{verbatim}
+[1] 11
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{my_apples} \hlopt{-} \hlstd{my_oranges}
+\end{alltt}
+\begin{verbatim}
+[1] -1
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{my_apples} \hlopt{*} \hlstd{my_oranges}
+\end{alltt}
+\begin{verbatim}
+[1] 30
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{my_apples} \hlopt{/} \hlstd{my_oranges}
+\end{alltt}
+\begin{verbatim}
+[1] 0.8333333
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Vector Arithmetic}
+\vskip10pt
+Computations performed element-wise
+\vskip10pt
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{money} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{50}\hlstd{,} \hlnum{100}\hlstd{,} \hlnum{40}\hlstd{)}
+\hlstd{> }\hlstd{money} \hlopt{*} \hlnum{2}
+\end{alltt}
+\begin{verbatim}
+[1] 100 200  80
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{money} \hlopt{/} \hlnum{10}
+\end{alltt}
+\begin{verbatim}
+[1]  5 10  4
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{money} \hlopt{+} \hlnum{10}
+\end{alltt}
+\begin{verbatim}
+[1]  60 110  50
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{money} \hlopt{^} \hlnum{2}
+\end{alltt}
+\begin{verbatim}
+[1]  2500 10000  1600
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Vector Arithmetic}
+\vskip10pt
+\tt{sum()} of all elements
+\vskip10pt
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{money}
+\end{alltt}
+\begin{verbatim}
+[1]  50 100  40
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{sum}\hlstd{(money)}
+\end{alltt}
+\begin{verbatim}
+[1] 190
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{sum}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlopt{-}\hlnum{5}\hlstd{,} \hlnum{4}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+[1] -1
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{sum}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{FALSE}\hlstd{,} \hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{TRUE}\hlstd{,} \hlnum{TRUE}\hlstd{))} \hlcom{# very handy}
+\end{alltt}
+\begin{verbatim}
+[1] 3
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{sum}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{FALSE}\hlstd{,} \hlnum{TRUE}\hlstd{,} \hlnum{NA}\hlstd{,} \hlnum{FALSE}\hlstd{))} \hlcom{# NA: missing data}
+\end{alltt}
+\begin{verbatim}
+[1] NA
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{sum}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{FALSE}\hlstd{,} \hlnum{TRUE}\hlstd{,} \hlnum{NA}\hlstd{,} \hlnum{FALSE}\hlstd{),} \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{)} \hlcom{# ignore NAs}
+\end{alltt}
+\begin{verbatim}
+[1] 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Vector Arithmetic}
+\vskip10pt
+\tt{sum()} of all elements
+\vskip10pt
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{a} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{10}\hlstd{; a}
+\end{alltt}
+\begin{verbatim}
+ [1]  1  2  3  4  5  6  7  8  9 10
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{b} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{10}\hlstd{,} \hlnum{20}\hlstd{,} \hlnum{30}\hlstd{,} \hlnum{40}\hlstd{,} \hlnum{50}\hlstd{); b}
+\end{alltt}
+\begin{verbatim}
+[1] 10 20 30 40 50
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{sum}\hlstd{(a)}
+\end{alltt}
+\begin{verbatim}
+[1] 55
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{sum}\hlstd{(b)}
+\end{alltt}
+\begin{verbatim}
+[1] 150
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{mean}\hlstd{(a)}
+\end{alltt}
+\begin{verbatim}
+[1] 5.5
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{sqrt}\hlstd{(b)}
+\end{alltt}
+\begin{verbatim}
+[1] 3.162278 4.472136 5.477226 6.324555 7.071068
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Comparing vectors}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{earnings} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{50}\hlstd{,} \hlnum{100}\hlstd{,} \hlnum{30}\hlstd{)}
+\hlstd{> }\hlstd{expenses} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{10}\hlstd{,} \hlnum{20}\hlstd{,} \hlnum{30}\hlstd{)}
+\hlstd{> }\hlstd{bank} \hlkwb{<-} \hlstd{earnings} \hlopt{-} \hlstd{expenses}
+\hlstd{> }\hlstd{bank}
+\end{alltt}
+\begin{verbatim}
+[1] 40 80  0
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{sum}\hlstd{(bank)}
+\end{alltt}
+\begin{verbatim}
+[1] 120
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{earnings} \hlopt{>} \hlstd{expenses}
+\end{alltt}
+\begin{verbatim}
+[1]  TRUE  TRUE FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{earnings} \hlopt{==} \hlstd{expenses}
+\end{alltt}
+\begin{verbatim}
+[1] FALSE FALSE  TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Subset vectors - the mighty \tt{[}}
+\vskip10pt
+By index
+\vskip10pt
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{x1} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{10}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{3}\hlstd{,} \hlopt{-}\hlnum{12}\hlstd{,} \hlnum{19}\hlstd{,} \hlnum{145}\hlstd{)}
+\hlstd{> }\hlstd{x1[}\hlnum{1}\hlstd{]} \hlcom{# first element has index 1}
+\end{alltt}
+\begin{verbatim}
+[1] 10
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(x1)} \hlcom{# last element has index the length of the vec}
+\hlstd{> }\hlstd{n}
+\end{alltt}
+\begin{verbatim}
+[1] 6
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{x1[n]}
+\end{alltt}
+\begin{verbatim}
+[1] 145
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{x1[}\hlnum{10}\hlstd{]} \hlcom{# only n elements!}
+\end{alltt}
+\begin{verbatim}
+[1] NA
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Subset vectors}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{x1}
+\end{alltt}
+\begin{verbatim}
+[1]  10   5   3 -12  19 145
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{x1[}\hlopt{-}\hlnum{1}\hlstd{]} \hlcom{# all but the first element}
+\end{alltt}
+\begin{verbatim}
+[1]   5   3 -12  19 145
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{x1[}\hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,} \hlnum{5}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+[1]  3 19
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{x1[}\hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{6}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+[1]   5   3 -12  19
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{x1[}\hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+[1] 10  5 19
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{x1[}\hlkwd{c}\hlstd{(}   \hlnum{1}\hlstd{,}    \hlnum{2}\hlstd{,}                  \hlnum{5}\hlstd{)]} \hlcom{# spaces are ignored}
+\end{alltt}
+\begin{verbatim}
+[1] 10  5 19
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{x1[}\hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{)]} \hlcom{# recycle when less than n!}
+\end{alltt}
+\begin{verbatim}
+[1]  10   5 -12  19
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Subset vectors}
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlcom{#?rnorm}
+\hlstd{> }\hlstd{x} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(}\hlnum{10}\hlstd{)}
+\hlstd{> }\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+ [1]  0.96431275 -0.20086165  1.51517615  0.23079883 -0.01346703
+ [6] -1.19497238  0.55480499  0.92617387 -1.07999909  0.52331375
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{x} \hlopt{>} \hlnum{0}
+\end{alltt}
+\begin{verbatim}
+ [1]  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{sum}\hlstd{(x} \hlopt{>} \hlnum{0}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+[1] 6
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{x[x} \hlopt{>} \hlnum{0}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+[1] 0.9643127 1.5151762 0.2307988 0.5548050 0.9261739 0.5233137
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,892 @@
+\documentclass[13pt,aspectratio=169]{beamer}
+\mode<presentation>{\usetheme{default}}
+
+%%% macros
+\newcommand{\todo}[1]{\textcolor{red}{@TODO: #1}}
+\newcommand{\tc}[2]{\textcolor{#1}{#2}}
+\renewcommand{\tt}[1]{\texttt{#1}}
+\newcommand{\ig}{\includegraphics}
+
+%%% packages
+\usepackage{tikz}
+\hypersetup{colorlinks,linkcolor=,urlcolor=blue}
+
+%%% Environments
+% make knitr output denser
+\ifdefined\knitrout
+\renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{}
+\else
+\fi
+
+%%% Colours
+\definecolor{green}{RGB}{0, 180, 0} % green is too light
+\definecolor{Blue}{RGB}{0, 51, 102} % dark navy blue
+%\definecolor{Blue}{RGB}{0, 0, 255} % other blue
+
+%%% Beamer elements
+%% Templates
+% page number
+\setbeamertemplate{footline}{%
+    \raisebox{5pt}{\makebox[\paperwidth]{\hfill\makebox[20pt]{\color{Blue}
+		\scriptsize\insertframenumber}}}\hspace*{5pt}}
+
+% frametitle
+\setbeamertemplate{frametitle}{\LARGE\color{Blue}\textbf{\insertframetitle}\vskip-1pt}
+\setbeamertemplate{itemize items}[ball]
+% \setbeamertemplate{itemize/enumerate body begin}{\Large}
+% \setbeamertemplate{itemize/enumerate subbody begin}{\normalsize}
+\beamertemplatenavigationsymbolsempty % clean out all the crap
+
+%% fonts
+\setbeamerfont{title}{size=\Huge,series=\bfseries}
+
+%% colours
+\setbeamercolor{title}{fg=Blue}
+\setbeamercolor*{item}{fg=Blue}
+
+%%% Other
+\title{The basics of R}
+\author{Peter Diakumis - Bahlo Lab \\[2pt] R Workshop 1}
+\date{\scriptsize{\today}}
+\graphicspath{{../figs/}}
+
+\begin{document}
+
+\begin{frame}[fragile]
+    \titlepage
+<<echo=FALSE, results="hide">>=
+# just setting up
+#options(width = 60)
+opts_chunk$set(comment = NA)
+opts_chunk$set(prompt = TRUE)
+opts_chunk$set(size = "small")
+rm(list = ls())
+@
+\end{frame}
+
+{ % all template changes are local to this group.
+    \begin{frame}[plain]
+	\begin{tikzpicture}[remember picture,overlay]
+	    \node[at=(current page.center)] {
+		\includegraphics[width=\paperwidth]{iceberg}
+	    };
+	\end{tikzpicture}
+    \end{frame}
+}
+
+\begin{frame}
+    \frametitle{What can we learn today?}
+    \begin{columns}[t]
+	\column{0.2\textwidth}
+	\begin{itemize}
+	    \item What is R
+	\end{itemize}
+	\vskip14pt
+	\includegraphics[width=.9\textwidth]{rapp_logo}\\
+	\column{0.5\textwidth}
+	\begin{itemize}
+	    \item How (and where) to find help, resouRces, courses, tutorials
+	\end{itemize}
+	\includegraphics[width=.8\textwidth,trim={0 0cm 0 17cm},clip]{google}\\
+	\includegraphics[width=.8\textwidth]{stackoverflow}\\
+	\includegraphics[width=.3\textwidth]{coursera}\hspace*{10mm}
+	\includegraphics[width=.3\textwidth]{edx}
+	\column{0.3\textwidth}
+	\begin{itemize}
+	    \item How to write and run R code \& scripts
+	\end{itemize}
+	\vskip14pt
+	\includegraphics[width=1.0\textwidth]{rstudio_logo}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{What can we learn today?}
+    \begin{columns}[t]
+	\column{0.3\textwidth}
+	\begin{itemize}
+	    \item \textbf{numbers, characters \& logicals} in R
+	\end{itemize}
+	\vskip14pt
+	\includegraphics[width=.9\textwidth]{acgt}
+	\column{0.3\textwidth}
+	\begin{itemize}
+	    \item \textbf{vectors} in R
+	\end{itemize}
+	\vskip14pt
+	\includegraphics[width=.7\textwidth]{dna}
+	\column{0.4\textwidth}
+	\begin{itemize}
+	    \item \textit{simple} \textbf{functions} in R
+	\end{itemize}
+	\vskip14pt
+	\includegraphics[width=.9\textwidth]{central-dogma}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{What can we learn today?}
+    \begin{columns}[t]
+	\column{0.4\textwidth}
+	\begin{itemize}
+	    \item \textbf{matrix, data.frame \& list} in R
+		\alert{(\textit{not today..})}
+	\end{itemize}
+	\vskip14pt
+	\includegraphics[width=1.0\textwidth]{protein}
+	\column{0.6\textwidth}
+	\begin{itemize}
+	    \item \textbf{packages} in R
+		\alert{(\textit{a little bit..})}
+	\end{itemize}
+	\vskip14pt
+	% trim from left anti-clockwise
+	\includegraphics[width=.9\textwidth,trim={0 2cm 0 2.5cm},clip]{cell}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+	\tc{Blue}{\textbf{\Huge{Part 1}}}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Stuff about R}
+	\begin{itemize}
+	    \item Programming language for statisticians \& data scientists
+		created in early 90s by \textbf{R}oss Ihaka \&
+		\textbf{R}obert Gentleman in Auckland, NZ
+	    \item Statistical computing, advanced methodologies,
+		amazing visualisations - \textbf{all in one}, and
+		\textbf{free}ly available (you didn't pay anything for
+		installation, did you?)
+	    \item Easy to \textbf{learn}. Hard to \textbf{master}.
+	\end{itemize}
+	\includegraphics[width=.2\textwidth]{oz_map}
+	\includegraphics[width=.2\textwidth]{heatmap}
+	\includegraphics[width=.2\textwidth]{boxplot}
+	\includegraphics[width=.2\textwidth]{barplot}
+	\includegraphics[width=.2\textwidth]{scatterplot}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Stuff about R}
+    \begin{columns}
+	\column{0.4\textwidth}
+	\includegraphics[height=.6\textheight]{cran}
+	\column{0.6\textwidth}
+	\begin{itemize}
+	    \item Close to 9,000 \textbf{free} R packages (extensions)
+		available (i.e. if you're analysing some kind of data, someone
+		has probably created a helpful package \& workflow)
+		\vskip10pt
+	    \item Excellent for reproducibility of analyses \& dry
+		lab experiments
+		\vskip10pt
+	    \item Easy collaboration and scientific report generation
+		\textit{(maybe HackR 3 or 4?)}
+	\end{itemize}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Start out...}
+    \begin{center}
+	\includegraphics[height=.9\textheight]{no-idea}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{...Train Hard}
+    \includegraphics[height=.9\textheight]{bear}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Then...}
+    \includegraphics[height=.9\textheight]{cat_karate}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+	\tc{Blue}{\textbf{\Huge{Very very short demo}}}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+<<eval=FALSE>>=
+install.packages("ggplot2")
+install.packages("oz")
+@
+
+<<>>=
+library(ggplot2); library(oz)
+load("../data/ozdata.rda")
+head(ozdata)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<>>=
+# map showing all states in different colours
+p <- qplot(long, lat, data = ozdata, geom = "polygon",
+      fill = state, main = "States of Australia") + coord_equal()
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE, fig.height=4>>=
+# map showing all states in different colours
+p
+
+@
+\end{frame}
+
+\begin{frame}
+    \frametitle{R comes in 3 basic flavours on a Mac:}
+    \includegraphics[width=\textwidth]{flavours}
+	    \vskip10pt
+    \textbf{\LARGE{\tc{Blue}{RStudio - R app - R terminal}}}
+\end{frame}
+
+\begin{frame}
+    \frametitle{RStudio is awRsome!}
+    \begin{center}
+	\includegraphics[height=.9\textheight]{rstudio}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+	\tc{Blue}{\textbf{\Huge{Let's start breaking R!}}}
+		\vskip10pt
+	\LARGE{... but first let's open Microsoft Excel}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+	\frametitle{Entering data in Excel is easy.
+	    \\But how do we enter data into R?}
+	\includegraphics[height=.6\textheight]{excel1}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Writing R Code - 2 ways}
+    \begin{center}
+	\includegraphics[height=.8\textheight]{yoda}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{columns}[b]
+	\column{0.5\textwidth}
+	\textbf{\tc{Blue}{\LARGE{1. Interactively in the console (\tt{>} is
+		    the \tc{green}{prompt})}}}
+	\vskip10pt
+	\includegraphics[height=.7\textheight]{rstudio_console}
+	\column{0.5\textwidth}
+	\textbf{\tc{Blue}{\LARGE{2. In a simple .R file \\
+		    (Cmd+Enter = Magic!)}}}
+	\vskip10pt
+	\includegraphics[height=.7\textheight]{rstudio_source}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{R Code Style Basics}
+    \tc{Blue}{\textbf{Assign values to variables
+	    \vskip10pt
+	    Use \tt{<-}}
+	\textit{(less than minus with \alert{no spaces} in between!!)}}.\\
+    Don't use \alert{\tt{=}}.\\ Because I said so.
+<<eval=FALSE, prompt=FALSE>>=
+# Good
+x <- 5
+my_name <- "Yoda"
+
+# Bad (but works...)
+x = 5
+my_name = "Yoda"
+@
+<<comment=NA, prompt=FALSE>>=
+x <- 5 # Good
+x < - 5 # Bad (works, but not as you'd expect!)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{R Code Style Basics}
+    \textbf{\tc{Blue}{Variable names}}
+    \begin{itemize}
+	\item Don't start with a number, and no spaces!
+	\item Keep it simple but descriptive
+	\item Names are like sensitive passwords:
+	    \tt{NAME}, \tt{Name}, \tt{name} \& \tt{NaMe} are distinct!
+    \end{itemize}
+<<eval=FALSE, prompt=FALSE>>=
+# Good
+day_one
+day_1
+dayOne
+day.one
+
+# Bad
+day one # won't work with spaces
+1_day # won't work starting with a number
+first_day_of_the_year_two_thousand_fifteen # very long
+fdotyttf # OMG LOL
+@
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{R Code Style Basics}
+    \textbf{\tc{Blue}{Spacing = Clarity!}}
+	    \vskip10pt
+	    Try reading out your code. Put spaces between things like you'd
+	    normally do when writing normal text.
+	    \vskip10pt
+	    Don't worry too much - will learn with experience :-)
+<<eval = FALSE>>=
+# Whichonewouldyouprefertoreadat2:35am?
+x <- (y + z) * 12 ^ (a - b) / sum(k, l)
+x<-(y+z)*12^(a-b)/sum(k,l)
+@
+
+Check out \href{https://google-styleguide.googlecode.com/svn/trunk/Rguide.xml}{web\_link1}
+and \href{http://adv-r.had.co.nz/Style.html}{web\_link2} if you are curious.
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{R Code Style Basics}
+    \textbf{\tc{Blue}{Comment your code with \#} -
+	everything on the right
+	of \tt{\#} is ignored}
+    \begin{itemize}
+	\item Either in a \alert{separate line}...
+    \end{itemize}
+
+<<>>=
+# Create variables height and width
+height <- 3
+width <- 6
+@
+    \begin{itemize}
+	\item Or in the \alert{same line} ...
+    \end{itemize}
+
+<<comment=NA>>=
+area <- height * width
+area # should be 18
+# area * 2
+@
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Variables }
+    \textbf{\tc{Blue}{Why do we need ``variables''?}}
+    \vskip10pt
+    In the code below, ``Yoda'' is written 3 times. (\tt{paste()} simply sticks
+    everything inside it together and prints the result)
+
+<<>>=
+paste("Yoda knows everything")
+paste("Luke learnt everything from Yoda")
+paste("I think Yoda is 785 years old")
+@
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Variables}
+    \textbf{\tc{Blue}{Why do we need ``variables''?}}
+    \vskip10pt
+    Let's say Yoda sends the R script to Peter.\\
+    In the code below, ``Peter'' is written \textit{almost} 3 times.
+
+<<>>=
+paste("Peter knows everything")
+paste("Luke learnt everything from Peter")
+paste("I think Pter is 785 years old")
+@
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Variables}
+    \textbf{\tc{Blue}{Why do we need ``variables''?}}
+    \vskip10pt
+    Instead of going through all the code and changing all the
+    occurrences of ``Yoda'' to ``Peter'', we can instead create a
+    variable e.g. \tt{the\_name} and assign it the value that we
+    wish. This way, ``Han'', ``Chewie'', ``Leia'' etc. only need
+    to change that variable \alert{once}. This saves time, energy \& eyeballs.
+    So variables = good.
+
+<<>>=
+the_name <- "Peter"
+paste(the_name, "knows everything")
+paste("Luke learnt everything from", the_name)
+paste("I think",  the_name, "is 785 years old")
+@
+\end{frame}
+
+
+\begin{frame}
+    \begin{center}
+	\tc{Blue}{\textbf{\Huge{Part 2}}}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Functions (very very briefly)}
+    \begin{columns}[t]
+	\column{0.4\textwidth}
+	\includegraphics[width=.8\textwidth]{function}
+	\column{0.6\textwidth}
+	\includegraphics[width=.6\textwidth]{sum_function_excel}\\
+<<>>=
+sum(123, 35, 59, 46, 26, 245.6, 25)
+@
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Functions (very very briefly)}
+    \begin{itemize}
+	\item The things you put between parentheses are called arguments
+	\item Use ``?'' to check out function details (e.g. what type of
+	    arguments you can specify)
+    \end{itemize}
+    \begin{columns}[t]
+	\column{0.5\textwidth}
+<<>>=
+sum(10, 20, 30, 100)
+prod(1, 2, 3, 4)
+@
+
+<<eval=FALSE>>=
+?sum
+?prod
+?paste
+@
+	\column{0.5\textwidth}
+<<>>=
+paste("Star", "Wars:", "Episode VI")
+paste("Return of", "the Jedi")
+@
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Workspace (or Environment)}
+    How can I see which variables have been created?
+    Just list them with \tt{ls()}:
+
+<<>>=
+ls()
+height
+rm(height) # rm removes stuff
+height
+@
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Workspace (or Environment)}
+    ...or check out the Environment window:
+    \vskip14pt
+    \includegraphics[width=.8\textwidth]{environment}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+	\textbf{\Huge{\tc{Blue}{Basic Data Types}}}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{numeric}
+    \begin{columns}[b]
+	\column{0.3\textwidth}
+    All numbers:
+    positive, negative, decimals.
+    Note how \tt{;} can be used to terminate an expression, instead of using a
+    separate line. Neat.
+<<>>=
+a <- 1; a
+b <- 2; b
+c <- 1000; c
+@
+	\column{0.3\textwidth}
+<<>>=
+d <- -34; d
+e <- 0; e
+f <- -753000; f
+@
+	\column{0.5\textwidth}
+    \includegraphics[width=.6\textwidth]{pi_day}
+    \vskip6pt
+<<>>=
+g <- 0.005; g
+h <- 3.14; h
+i <- -42.9; i
+@
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{character}
+    Anything you put in between quotes \tt{``''} \hspace*{10mm}
+    \includegraphics[width=.3\textwidth]{dog_ears}
+<<>>=
+lucky_num <- "My lucky number is 42"
+lucky_num
+num_but_char <- "13"
+num_but_char
+get_published <- "If p-value < 0.05 then Nature awaits..."
+get_published
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+    \frametitle{logical}
+    \begin{columns}[t]
+	\column{.35\textwidth}
+	Things are either TRUE or FALSE. Never both.
+	\vskip6pt
+	\includegraphics[width=1.0\textwidth,trim={0 0.5cm 0 0},clip]{true_false}
+	\column{.35\textwidth}
+<<>>=
+2 > 1
+6 < 2
+1 + 1 == 2
+6 - 5 == 3
+10 / 5 == 2
+@
+	\column{.3\textwidth}
+<<>>=
+TRUE == FALSE
+# Not equal
+TRUE != FALSE
+# How about characters?
+"Hello" == "Hello"
+"Hello" == "hello"
+@
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{logical}
+    \fontsize{14pt}{5}\selectfont
+    \vskip16pt
+    You can also use the number form of logicals:\\
+    \vskip16pt
+    \tt{TRUE} is 1. \tt{FALSE} is 0
+    \vskip16pt
+
+<<>>=
+x <- TRUE
+3 * x
+y <- FALSE
+123 * y
+x + y
+(3 * x) + (123 * y)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{logical}
+    \begin{columns}[t]
+	\column{.4\textwidth}
+	\tt{TRUE} and \tt{FALSE} are protected in R i.e. you can't modify them.
+	They can be a bit of a pain to type. You can be naughty and use
+	shortcut T and F. \alert{Don't} because...
+
+	\vskip6pt
+	\includegraphics[width=1.0\textwidth,trim={0 1.5cm 0 0},clip]{true_false2}
+	\column{.2\textwidth}
+<<>>=
+T
+F
+x <- T
+x
+T <- FALSE
+T
+x <- T
+x
+@
+
+<<echo=FALSE>>=
+rm(list = ls())
+@
+	\column{.4\textwidth}
+<<>>=
+# valid
+T <- "Thank You"
+T
+x <- T
+x
+# invalid
+TRUE <- "You're Welcome"
+TRUE
+@
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{factor}
+When you have only a few different "categories" of data values
+\vskip6pt
+e.g. gender, country, age group, religion etc.
+\vskip6pt
+<<>>=
+blood <- c("B", "AB", "O", "A", "O", "O", "A", "B")
+blood
+blood_factor <- factor(blood)
+blood_factor
+str(blood_factor)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{function \tt{is}...}
+    Helpful to check if something \alert{\textit{is something}}:\\
+<<>>=
+is.numeric(13)
+is.numeric(-1)
+is.numeric(0.0004)
+is.numeric("This is stupid")
+is.numeric(100,000) # can't use thousand separator!
+is.numeric(100000)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{function \tt{is}...}
+    Helpful to check if something \alert{\textit{is something}}:\\
+<<>>=
+et <- "E.T. Go Home"
+darth_vader <- "Luke I'm your father"
+num_but_char <- "13"
+is.character(et)
+is.character(darth_vader)
+is.character(num_but_char)
+is.numeric(et)
+is.numeric(num_but_char)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{function \tt{as}...}
+    Helpful to convert (coerce) something \alert{\textit{as something}}:\\
+    \begin{columns}[t]
+	\column{0.5\textwidth}
+<<>>=
+as.numeric(TRUE)
+as.numeric(FALSE)
+as.character(4)
+as.numeric("4.5")
+# Can't coerce characters to
+# numeric, unless they're quoted
+# numbers.
+as.numeric("Hello")
+@
+	\column{0.5\textwidth}
+<<>>=
+# All numbers are TRUE, except 0
+as.logical(0)
+as.logical(-5)
+as.logical(1)
+as.logical(5.9)
+@
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+	\textbf{\Huge{\tc{Blue}{Vectors and Subsetting}}}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Vector}
+    \begin{itemize}
+	\item Sequence of data elements
+	\item Same basic type
+	\item \tt{numeric}, \tt{logical}, \tt{character}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Create a vector with \tt{c()}}
+<<>>=
+fruit <- c("banana", "apple", "apple", "kiwi", "pineapple", "strawberry")
+fruit
+drawn_suits <- c("hearts", "spades", "diamonds", "diamonds", "spades")
+drawn_suits
+lucky_numbers <- c(10, 7, 13, 42, 99)
+lucky_numbers
+is.vector(drawn_suits)
+is.vector(fruit)
+is.vector(lucky_numbers)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Create a vector with \tt{:}}
+<<>>=
+quick_vec <- 1:10
+quick_vec
+x <- 5:12
+x
+y <- -2:3
+y
+z <- 3.2:10
+z
+@
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Get a vector's length with... \tt{length()}}
+<<>>=
+fruit
+length(fruit)
+drawn_suits
+length(lucky_numbers)
+length(10)
+length(c(3))
+length(c()) # empty vector
+@
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Coercion for vectors}
+<<>>=
+drawn_ranks <- c(7, 4, "A", 10, "K", 3, 2, "Q")
+drawn_ranks
+str(drawn_ranks)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Vector Arithmetic}
+\vskip10pt
+Single element arithmetic
+\vskip10pt
+<<>>=
+my_apples <- 5
+my_oranges <- 6
+my_apples + my_oranges
+my_apples - my_oranges
+my_apples * my_oranges
+my_apples / my_oranges
+@
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Vector Arithmetic}
+\vskip10pt
+Computations performed element-wise
+\vskip10pt
+<<>>=
+money <- c(50, 100, 40)
+money * 2
+money / 10
+money + 10
+money ^ 2
+@
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Vector Arithmetic}
+\vskip10pt
+\tt{sum()} of all elements
+\vskip10pt
+<<>>=
+money
+sum(money)
+sum(c(0, 0, -5, 4))
+sum(c(FALSE, TRUE, FALSE, TRUE, TRUE)) # very handy
+sum(c(FALSE, TRUE, NA, FALSE)) # NA: missing data
+sum(c(FALSE, TRUE, NA, FALSE), na.rm = TRUE) # ignore NAs
+@
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Vector Arithmetic}
+\vskip10pt
+\tt{sum()} of all elements
+\vskip10pt
+<<>>=
+a <- 1:10; a
+b <- c(10, 20, 30, 40, 50); b
+
+sum(a)
+sum(b)
+mean(a)
+sqrt(b)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Comparing vectors}
+<<>>=
+earnings <- c(50, 100, 30)
+expenses <- c(10, 20, 30)
+bank <- earnings - expenses
+bank
+sum(bank)
+earnings > expenses
+earnings == expenses
+@
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Subset vectors - the mighty \tt{[}}
+\vskip10pt
+By index
+\vskip10pt
+<<>>=
+x1 <- c(10, 5, 3, -12, 19, 145)
+x1[1] # first element has index 1
+n <- length(x1) # last element has index the length of the vec
+n
+x1[n]
+x1[10] # only n elements!
+@
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Subset vectors}
+<<>>=
+x1
+x1[-1] # all but the first element
+x1[c(3, 5)]
+x1[-c(1, 6)]
+x1[c(TRUE, TRUE, FALSE, FALSE, TRUE, FALSE)]
+x1[c(   1,    2,                  5)] # spaces are ignored
+x1[c(TRUE, TRUE, FALSE)] # recycle when less than n!
+@
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Subset vectors}
+<<>>=
+#?rnorm
+x <- rnorm(10)
+x
+x > 0
+sum(x > 0)
+x[x > 0]
+
+@
+\end{frame}
+
+\end{document}
